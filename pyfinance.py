@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import openpyxl
 
 np.random.seed(1234)
 pd.options.display.max_rows = 10
@@ -27,8 +26,9 @@ def create_data(stocks):
 
 def save_to_file(df):
     #output = StringIO.StringIO()
-    writer = pd.ExcelWriter('~\\ratings.xlsx')
+    writer = pd.ExcelWriter('ratings.xlsx')
     df.to_excel(writer,sheet_name ='Sheet1')
     writer.save()
+#End of Data Preparation
 
 if __name__ == '__main__': main()
