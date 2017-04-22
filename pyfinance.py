@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import openpyxl
 
 np.random.seed(1234)
 pd.options.display.max_rows = 10
@@ -8,7 +9,9 @@ pd.options.display.max_rows = 10
 def main():
     df = create_data(['AMZN','GOOGL','FB','NFLX','INTC'])
     df.index.name = 'date'
-    print(df)
+    #df.to_excel('ratings.xls')
+    #print(pd.__version__)
+    save_to_file(df)
 
 #Data Preparation
 def create_data(stocks):
@@ -22,6 +25,10 @@ def create_data(stocks):
         l.append(pd.Series(ratings[ratings_indexer],index=dates[dates_indexer],name=s))
     return pd.concat(l,axis=1)
 
-    
+def save_to_file(df):
+    #output = StringIO.StringIO()
+    writer = pd.ExcelWriter('~\\ratings.xlsx')
+    df.to_excel(writer,sheet_name ='Sheet1')
+    writer.save()
 
 if __name__ == '__main__': main()
