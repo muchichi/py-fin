@@ -42,7 +42,7 @@ def read_quotes():
     p = pdr.get_data_yahoo(r.columns,'20160101','20161231')
     #Indexing
     #p.loc[:,:,'AMZN']
-    3p.loc['Adj Close']
+    p.loc['Adj Close']
     return p.to_frame()
 def reshape_quotes(df):
     p = df[['Adj Close','Volume']]
