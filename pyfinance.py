@@ -13,7 +13,9 @@ def main():
     #df = create_data(['AMZN','GOOGL','FB','NFLX','INTC'])
     #df.index.name = 'date'
     #save_to_file(df)
-    read_quotes()
+    #print(read_quotes())
+    #print(reshape_quotes(read_quotes()))
+    save_data()
 #------------------------------------------------------------------------------------------
 #Data Preparation
 def create_data(stocks):
@@ -44,15 +46,25 @@ def read_quotes():
     #p.loc[:,:,'AMZN']
     p.loc['Adj Close']
     return p.to_frame()
+    
 def reshape_quotes(df):
     p = df[['Adj Close','Volume']]
     p.index.names=['date','stock']
-    p.columns['close','volume']
+    p.columns=['close','volume']
     p.columns.names = ['field']
     p = p.swaplevel('date','stock').sort_index()
-    return p
-def compute
+    return p.assign(ret=100 * p.groupby(level='stock').close.pct_change())
+    
+def save_data():
+    data = reshape_quotes(read_quotes())
+    # Save as .hdf
+    data.to_hdf('quotes.hdf','df',format='table')
+    #Save as .csv
+    for g,grp in data.groupby(level='stock'):
+        grp.to_csv('quotes/{}.csv'.format(g))
+        print(g + '.csv created')
 
 
 
 if __name__ == '__main__': main()
+
