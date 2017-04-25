@@ -16,7 +16,8 @@ def main():
     #print(read_quotes())
     #print(reshape_quotes(read_quotes()))
     #save_data()
-    print(load_reshape_ratings())
+    #print(load_reshape_ratings())
+    clean_data()
 #------------------------------------------------------------------------------------------
 #Data Preparation
 def create_data(stocks):
@@ -73,6 +74,19 @@ def load_reshape_ratings():
     r.index.names=['date','stock']
     r = r.swaplevel('date','stock').sort_index()
     return r
+    
+def clean_data():
+    #read the data
+    q = pd.read_hdf('quotes.hdf','df')
+    #merge ratings and the data
+    r = load_reshape_ratings()
+    merged = (pd.merge(r.reset_index(),q.reset_index(),on=['date','stock'],how='outer').set_index(['stock','date']).sort_index(level=['stock','date']))
+    #fillna
+    merged = merged.assign(ratings=(merged.groupby(level='stock').ratings.ffill()))
+    #save merged
+    print(merged.head())
+    merged.reset_index().to_hdf('merged.hdf','df',mode='w',format='table')
+    
 
 if __name__ == '__main__': main()
 
