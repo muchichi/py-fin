@@ -10,13 +10,13 @@ pd.options.display.max_columns=8
 
 #Main
 def main():
-    #df = create_data(['AMZN','GOOGL','FB','NFLX','INTC'])
-    #df.index.name = 'date'
-    #save_to_file(df)
-    #print(read_quotes())
-    #print(reshape_quotes(read_quotes()))
-    #save_data()
-    #print(load_reshape_ratings())
+    df = create_data(['AMZN','GOOGL','FB','NFLX','INTC'])
+    df.index.name = 'date'
+    save_to_file(df)
+    print(read_quotes())
+    print(reshape_quotes(read_quotes()))
+    save_data()
+    print(load_reshape_ratings())
     clean_data()
 #------------------------------------------------------------------------------------------
 #Data Preparation
