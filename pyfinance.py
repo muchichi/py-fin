@@ -15,7 +15,8 @@ def main():
     #save_to_file(df)
     #print(read_quotes())
     #print(reshape_quotes(read_quotes()))
-    save_data()
+    #save_data()
+    print(load_reshape_ratings())
 #------------------------------------------------------------------------------------------
 #Data Preparation
 def create_data(stocks):
@@ -64,7 +65,14 @@ def save_data():
         grp.to_csv('quotes/{}.csv'.format(g))
         print(g + '.csv created')
 
-
+#-------------------------------------------------------------------------------------------
+#Clean Data
+def load_reshape_ratings():
+    r = pd.read_excel('ratings.xlsx',index_col=0)
+    r = r.stack().to_frame('ratings')
+    r.index.names=['date','stock']
+    r = r.swaplevel('date','stock').sort_index()
+    return r
 
 if __name__ == '__main__': main()
 
